@@ -25,3 +25,4 @@ class ProductQuestion_ProductAttributeTypes extends DataExtension
         }
     }
 }
+

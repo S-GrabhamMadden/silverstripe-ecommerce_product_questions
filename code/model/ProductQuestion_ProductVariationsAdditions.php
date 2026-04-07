@@ -26,3 +26,4 @@ class ProductQuestion_ProductVariationsAdditions extends DataExtension
         //go through values to add to variations
     }
 }
+

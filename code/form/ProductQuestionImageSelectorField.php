@@ -107,3 +107,4 @@ class ProductQuestionImageSelectorField extends OptionsetField
         }
     }
 }
+

@@ -127,3 +127,4 @@ class ProductQuestion_ProductControllerDecorator extends Extension
         return $this->productQuestionOrderItem;
     }
 }
+

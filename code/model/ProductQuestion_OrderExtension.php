@@ -26,3 +26,4 @@ class ProductQuestion_OrderExtension extends DataExtension
         return count($array) ? $array : null;
     }
 }
+
