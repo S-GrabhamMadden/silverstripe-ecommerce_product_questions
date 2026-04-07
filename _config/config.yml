@@ -1,34 +1,27 @@
 ---
 Name: ProductQuestionMain
 ---
-Product:
+Sunnysideup\Ecommerce\Pages\Product:
   extensions:
-    - ProductQuestion_ProductDecorator
-
-ProductController:
+    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_ProductDecorator
+Sunnysideup\Ecommerce\Pages\ProductController:
   extensions:
-    - ProductQuestion_ProductControllerDecorator
-
-Order:
+    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_ProductControllerDecorator
+Sunnysideup\Ecommerce\Model\Order:
   extensions:
-    - ProductQuestion_OrderExtension
-
-OrderItem:
+    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_OrderExtension
+Sunnysideup\Ecommerce\Model\OrderItem:
   extensions:
-    - ProductQuestion_OrderItemExtension
-
-ProductQuestion:
+    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_OrderItemExtension
+Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion:
   number_per_row: 1
-
-ProductConfigModelAdmin:
+Sunnysideup\Ecommerce\Cms\ProductConfigModelAdmin:
   managed_models:
-    - ProductQuestion
-
-
+    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion
 ---
 Only:
   classexists: 'ProductVariation'
 ---
 ProductVariation:
   extensions:
-    - ProductQuestion_ProductVariationDecorator
+    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_ProductVariationDecorator

@@ -2,8 +2,11 @@
 
 namespace Sunnysideup\EcommerceProductQuestions\Model;
 
-use DataExtension;
-use FieldList;
+
+
+use SilverStripe\Forms\FieldList;
+use SilverStripe\ORM\DataExtension;
+
 
 
 

@@ -1,0 +1,582 @@
+2026-04-07 12:44
+
+# running php upgrade upgrade see: https://github.com/silverstripe/silverstripe-upgrader
+cd /home/sdgm/projects/upgrades/upgradeto4
+php /home/sdgm/projects/ss3upgrader/vendor/silverstripe/upgrader/bin/upgrade-code upgrade /home/sdgm/projects/upgrades/upgradeto4/ecommerce_product_questions  --root-dir=/home/sdgm/projects/upgrades/upgradeto4 --write -vvv
+Writing changes for 14 files
+Running upgrades on "/home/sdgm/projects/upgrades/upgradeto4/ecommerce_product_questions"
+[2026-04-07 12:44:04] Applying RenameClasses to EcommerceProductQuestionsTest.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to EcommerceProductQuestionsTest.php...
+[2026-04-07 12:44:04] Applying RenameClasses to _config.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to _config.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_ProductVariationDecorator.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_ProductVariationDecorator.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_OrderExtension.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_OrderExtension.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_ProductExtension.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_ProductExtension.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_ProductVariationExtension.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_ProductVariationExtension.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_ProductDecorator.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_ProductDecorator.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_ProductControllerDecorator.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_ProductControllerDecorator.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_ProductAttributeValues.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_ProductAttributeValues.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_ProductAttributeTypes.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_ProductAttributeTypes.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_ProductVariationsAdditions.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_ProductVariationsAdditions.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestion_OrderItemExtension.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestion_OrderItemExtension.php...
+[2026-04-07 12:44:04] Applying RenameClasses to ProductQuestionImageSelectorField.php...
+[2026-04-07 12:44:04] Applying ClassToTraitRule to ProductQuestionImageSelectorField.php...
+[2026-04-07 12:44:04] Applying UpdateConfigClasses to config.yml...
+modified:	tests/EcommerceProductQuestionsTest.php
+@@ -1,4 +1,6 @@
+ <?php
++
++use SilverStripe\Dev\SapphireTest;
+
+ class EcommerceProductQuestionsTest extends SapphireTest
+ {
+
+modified:	src/Model/ProductQuestion_ProductVariationDecorator.php
+@@ -2,10 +2,16 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataExtension;
+-use FieldList;
+-use CheckboxSetField;
+-use Controller;
++
++
++
++
++use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
++use SilverStripe\Forms\FieldList;
++use SilverStripe\Forms\CheckboxSetField;
++use SilverStripe\Control\Controller;
++use SilverStripe\ORM\DataExtension;
++
+
+
+
+@@ -40,8 +46,8 @@
+     private static $db = array("ConfigureLabel" => 'Varchar(50)');
+
+     private static $many_many = array(
+-        "IgnoreProductQuestions" => 'ProductQuestion',
+-        "AdditionalProductQuestions" => 'ProductQuestion'
++        "IgnoreProductQuestions" => ProductQuestion::class,
++        "AdditionalProductQuestions" => ProductQuestion::class
+     );
+
+     public function updateCMSFields(FieldList $fields)
+
+modified:	src/Model/ProductQuestion_OrderExtension.php
+@@ -2,7 +2,9 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataExtension;
++
++use SilverStripe\ORM\DataExtension;
++
+
+
+ /**
+
+modified:	src/Model/ProductQuestion.php
+@@ -2,24 +2,45 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataObject;
+-use CheckboxField;
+-use OptionsetField;
+-use HiddenField;
+-use Product;
+-use CheckboxSetField;
+-use GridField;
+-use GridFieldEditOriginalPageConfigWithDelete;
+-use LiteralField;
+-use Folder;
+-use TreeDropdownField;
+-use Image;
+-use ReadonlyField;
++
++
++
++
++
++
++
++
++
++
++
++
++
+ use ProductVariation;
+-use Convert;
+-use ProductQuestionImageSelectorField;
+-use Controller;
+-use Director;
++
++
++
++
++use Sunnysideup\Ecommerce\Pages\Product;
++use SilverStripe\Assets\Folder;
++use SilverStripe\Forms\TextField;
++use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
++use SilverStripe\Forms\CheckboxField;
++use SilverStripe\Forms\OptionsetField;
++use SilverStripe\Forms\HiddenField;
++use SilverStripe\Forms\CheckboxSetField;
++use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldEditOriginalPageConfigWithDelete;
++use SilverStripe\Forms\GridField\GridField;
++use SilverStripe\Forms\LiteralField;
++use SilverStripe\Forms\TreeDropdownField;
++use SilverStripe\Assets\Image;
++use SilverStripe\Forms\ReadonlyField;
++use SilverStripe\Core\Convert;
++use Sunnysideup\EcommerceProductQuestions\Form\ProductQuestionImageSelectorField;
++use SilverStripe\Forms\DropdownField;
++use SilverStripe\Control\Director;
++use SilverStripe\Control\Controller;
++use SilverStripe\ORM\DataObject;
++
+
+
+ /**
+@@ -69,7 +90,7 @@
+      * Links questions to products
+      */
+     private static $many_many = array(
+-        'Products' => 'Product'
++        'Products' => Product::class
+     );
+
+     /**
+@@ -77,7 +98,7 @@
+      * Links to folder for images
+      */
+     private static $has_one = array(
+-        'Folder' => 'Folder'
++        'Folder' => Folder::class
+     );
+
+     /**
+@@ -115,7 +136,7 @@
+      * Standard SS variable.
+      */
+     private static $defaults = array(
+-        "DefaultFormField" => "TextField",
++        "DefaultFormField" => TextField::class,
+         "DefaultAnswer" => "tba"
+     );
+
+@@ -167,7 +188,7 @@
+     }
+     public static function get_plural_name()
+     {
+-        $obj = Singleton("ProductQuestion");
++        $obj = Singleton(ProductQuestion::class);
+         return $obj->i18n_plural_name();
+     }
+
+@@ -236,7 +257,7 @@
+                 $fields->addFieldToTab(
+                     "Root.Products",
+                     new LiteralField(
+-                        "Product".$product->ID,
++                        Product::class.$product->ID,
+                         "<h5><a href=\"".$product->CMSEditLink()."\">"._t("ProductQuestion.BACK_TO", "Edit ")." ".$product->Title."</a></h5>"
+                     )
+                 );
+@@ -247,10 +268,10 @@
+             if ($folders->count()) {
+                 $folderMap = $folders->map("ID", "Title")->toArray();
+                 $folders = null;
+-                $fields->removeFieldFromTab("Root.Main", "Folder");
++                $fields->removeFieldFromTab("Root.Main", Folder::class);
+                 $fields->addFieldToTab(
+                     "Root.Images",
+-                    $treeDropdownField = new TreeDropdownField("FolderID", _t("ProductQuestion.FOLDER", "Folder"), "Folder")
++                    $treeDropdownField = new TreeDropdownField("FolderID", _t("ProductQuestion.FOLDER", Folder::class), Folder::class)
+                 );
+                 $treeDropdownFieldRightTitle = _t(
+                     "ProductQuestion.FOLDER_ID",
+@@ -354,7 +375,7 @@
+                 }
+             }
+         } else {
+-            $fields->removeByName("Folder");
++            $fields->removeByName(Folder::class);
+         }
+         if ($this->Products()->count()) {
+             $randomProduct = $this->Products()->First();
+@@ -437,7 +458,7 @@
+             } else {
+                 $formFieldClass = $this->DefaultFormField;
+                 if (!$formFieldClass) {
+-                    $formFieldClass = "DropdownField";
++                    $formFieldClass = DropdownField::class;
+                 }
+                 $finalOptions = array("" => _t("ProductQuestion.PLEASE_SELECT", " -- please select --")) + $finalOptions;
+                 return $formFieldClass::create($this->getFieldForProductName($product), $this->Question, $finalOptions, $value);
+@@ -445,7 +466,7 @@
+         } else {
+             $formFieldClass = $this->DefaultFormField;
+             if (!$formFieldClass) {
+-                $formFieldClassd = "TextField";
++                $formFieldClassd = TextField::class;
+             }
+             return $formFieldClass::create($this->getFieldForProductName($product), $this->Question, $value);
+         }
+
+Warnings for src/Model/ProductQuestion.php:
+ - src/Model/ProductQuestion.php:443 PhpParser\Node\Expr\Variable
+ - WARNING: New class instantiated by a dynamic value on line 443
+
+ - src/Model/ProductQuestion.php:450 PhpParser\Node\Expr\Variable
+ - WARNING: New class instantiated by a dynamic value on line 450
+
+modified:	src/Model/ProductQuestion_ProductExtension.php
+@@ -2,12 +2,20 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataExtension;
+-use FieldList;
+-use TextField;
+-use CheckboxSetField;
+-use LiteralField;
+-use Controller;
++
++
++
++
++
++
++use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
++use SilverStripe\Forms\FieldList;
++use SilverStripe\Forms\TextField;
++use SilverStripe\Forms\CheckboxSetField;
++use SilverStripe\Forms\LiteralField;
++use SilverStripe\Control\Controller;
++use SilverStripe\ORM\DataExtension;
++
+
+
+
+@@ -41,7 +49,7 @@
+
+     private static $db = array('ConfigureLabel' => 'Varchar(50)');
+
+-    private static $belongs_many_many = array('ProductQuestions' => 'ProductQuestion');
++    private static $belongs_many_many = array('ProductQuestions' => ProductQuestion::class);
+
+     public function updateCMSFields(FieldList $fields)
+     {
+
+modified:	src/Model/ProductQuestion_ProductVariationExtension.php
+@@ -2,10 +2,16 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataExtension;
+-use FieldList;
+-use CheckboxSetField;
+-use Controller;
++
++
++
++
++use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
++use SilverStripe\Forms\FieldList;
++use SilverStripe\Forms\CheckboxSetField;
++use SilverStripe\Control\Controller;
++use SilverStripe\ORM\DataExtension;
++
+
+
+
+@@ -40,8 +46,8 @@
+     private static $db = array("ConfigureLabel" => 'Varchar(50)');
+
+     private static $many_many = array(
+-        "IgnoreProductQuestions" => 'ProductQuestion',
+-        "AdditionalProductQuestions" => 'ProductQuestion'
++        "IgnoreProductQuestions" => ProductQuestion::class,
++        "AdditionalProductQuestions" => ProductQuestion::class
+     );
+
+     public function updateCMSFields(FieldList $fields)
+
+modified:	src/Model/ProductQuestion_ProductDecorator.php
+@@ -2,12 +2,20 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataExtension;
+-use FieldList;
+-use TextField;
+-use CheckboxSetField;
+-use LiteralField;
+-use Controller;
++
++
++
++
++
++
++use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
++use SilverStripe\Forms\FieldList;
++use SilverStripe\Forms\TextField;
++use SilverStripe\Forms\CheckboxSetField;
++use SilverStripe\Forms\LiteralField;
++use SilverStripe\Control\Controller;
++use SilverStripe\ORM\DataExtension;
++
+
+
+
+@@ -41,7 +49,7 @@
+
+     private static $db = array('ConfigureLabel' => 'Varchar(50)');
+
+-    private static $belongs_many_many = array('ProductQuestions' => 'ProductQuestion');
++    private static $belongs_many_many = array('ProductQuestions' => ProductQuestion::class);
+
+     public function updateCMSFields(FieldList $fields)
+     {
+
+modified:	src/Model/ProductQuestion_ProductControllerDecorator.php
+@@ -2,10 +2,15 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use Extension;
+-use OrderItem;
+-use FieldList;
+-use Convert;
++
++
++
++
++use Sunnysideup\Ecommerce\Model\OrderItem;
++use SilverStripe\Forms\FieldList;
++use SilverStripe\Core\Convert;
++use SilverStripe\Core\Extension;
++
+
+
+
+
+modified:	src/Model/ProductQuestion_ProductAttributeValues.php
+@@ -2,8 +2,12 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataExtension;
+-use FieldList;
++
++
++use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
++use SilverStripe\Forms\FieldList;
++use SilverStripe\ORM\DataExtension;
++
+
+
+
+@@ -36,7 +40,7 @@
+     private static $table_name = 'ProductQuestion_ProductAttributeValues';
+
+     private static $many_many = array(
+-        'ProductQuestions' => 'ProductQuestion'
++        'ProductQuestions' => ProductQuestion::class
+     );
+
+     public function updateCMSFields(FieldList $fields)
+
+modified:	src/Model/ProductQuestion_ProductAttributeTypes.php
+@@ -2,8 +2,12 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataExtension;
+-use FieldList;
++
++
++use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
++use SilverStripe\Forms\FieldList;
++use SilverStripe\ORM\DataExtension;
++
+
+
+
+@@ -36,7 +40,7 @@
+     private static $table_name = 'ProductQuestion_ProductAttributeTypes';
+
+     private static $many_many = array(
+-        'ProductQuestions' => 'ProductQuestion'
++        'ProductQuestions' => ProductQuestion::class
+     );
+
+     public function updateCMSFields(FieldList $fields)
+
+modified:	src/Model/ProductQuestion_ProductVariationsAdditions.php
+@@ -2,8 +2,11 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataExtension;
+-use FieldList;
++
++
++use SilverStripe\Forms\FieldList;
++use SilverStripe\ORM\DataExtension;
++
+
+
+
+
+modified:	src/Model/ProductQuestion_OrderItemExtension.php
+@@ -2,18 +2,31 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+-use DataExtension;
+-use FieldList;
+-use ReadonlyField;
+-use Requirements;
+-use ModelAsController;
+-use Controller;
+-use HiddenField;
+-use FormAction;
+-use RequiredFields;
+-use Form;
+-use ArrayList;
+-use Convert;
++
++
++
++
++
++
++
++
++
++
++
++
++use SilverStripe\Forms\FieldList;
++use SilverStripe\Forms\ReadonlyField;
++use SilverStripe\View\Requirements;
++use SilverStripe\CMS\Controllers\ModelAsController;
++use SilverStripe\Control\Controller;
++use SilverStripe\Forms\HiddenField;
++use SilverStripe\Forms\FormAction;
++use SilverStripe\Forms\RequiredFields;
++use SilverStripe\Forms\Form;
++use SilverStripe\ORM\ArrayList;
++use SilverStripe\Core\Convert;
++use SilverStripe\ORM\DataExtension;
++
+
+
+ /**
+
+modified:	src/Form/ProductQuestionImageSelectorField.php
+@@ -2,10 +2,16 @@
+
+ namespace Sunnysideup\EcommerceProductQuestions\Form;
+
+-use OptionsetField;
+-use ArrayList;
+-use ProductQuestion;
+-use DataObject;
++
++
++
++
++use SilverStripe\ORM\ArrayList;
++use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
++use SilverStripe\Assets\Image;
++use SilverStripe\ORM\DataObject;
++use SilverStripe\Forms\OptionsetField;
++
+
+
+ /**
+@@ -102,7 +108,7 @@
+             foreach ($this->options as $option) {
+                 $imageOptions = ProductQuestion::create_file_array_from_option($option);
+                 $image = DataObject::get_one(
+-                    'Image',
++                    Image::class,
+                     array("ParentID" => $this->folderID, "Name" => $imageOptions),
+                     $cacheDataObjectGetOne = false
+                 );
+
+Warnings for src/Form/ProductQuestionImageSelectorField.php:
+ - src/Form/ProductQuestionImageSelectorField.php:105 Renaming ambiguous string Image to SilverStripe\Assets\Image
+
+modified:	_config/config.yml
+@@ -1,35 +1,28 @@
+ ---
+ Name: ProductQuestionMain
+ ---
+-Product:
++Sunnysideup\Ecommerce\Pages\Product:
+   extensions:
+-    - ProductQuestion_ProductDecorator
+-
+-ProductController:
++    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_ProductDecorator
++Sunnysideup\Ecommerce\Pages\ProductController:
+   extensions:
+-    - ProductQuestion_ProductControllerDecorator
+-
+-Order:
++    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_ProductControllerDecorator
++Sunnysideup\Ecommerce\Model\Order:
+   extensions:
+-    - ProductQuestion_OrderExtension
+-
+-OrderItem:
++    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_OrderExtension
++Sunnysideup\Ecommerce\Model\OrderItem:
+   extensions:
+-    - ProductQuestion_OrderItemExtension
+-
+-ProductQuestion:
++    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_OrderItemExtension
++Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion:
+   number_per_row: 1
+-
+-ProductConfigModelAdmin:
++Sunnysideup\Ecommerce\Cms\ProductConfigModelAdmin:
+   managed_models:
+-    - ProductQuestion
+-
+-
++    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion
+ ---
+ Only:
+   classexists: 'ProductVariation'
+ ---
+ ProductVariation:
+   extensions:
+-    - ProductQuestion_ProductVariationDecorator
++    - Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion_ProductVariationDecorator
+
+
+Writing changes for 14 files
+✔✔✔

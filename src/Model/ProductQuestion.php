@@ -2,24 +2,45 @@
 
 namespace Sunnysideup\EcommerceProductQuestions\Model;
 
-use DataObject;
-use CheckboxField;
-use OptionsetField;
-use HiddenField;
-use Product;
-use CheckboxSetField;
-use GridField;
-use GridFieldEditOriginalPageConfigWithDelete;
-use LiteralField;
-use Folder;
-use TreeDropdownField;
-use Image;
-use ReadonlyField;
+
+
+
+
+
+
+
+
+
+
+
+
+
 use ProductVariation;
-use Convert;
-use ProductQuestionImageSelectorField;
-use Controller;
-use Director;
+
+
+
+
+use Sunnysideup\Ecommerce\Pages\Product;
+use SilverStripe\Assets\Folder;
+use SilverStripe\Forms\TextField;
+use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\OptionsetField;
+use SilverStripe\Forms\HiddenField;
+use SilverStripe\Forms\CheckboxSetField;
+use Sunnysideup\Ecommerce\Forms\Gridfield\Configs\GridFieldEditOriginalPageConfigWithDelete;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\TreeDropdownField;
+use SilverStripe\Assets\Image;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\Core\Convert;
+use Sunnysideup\EcommerceProductQuestions\Form\ProductQuestionImageSelectorField;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Control\Director;
+use SilverStripe\Control\Controller;
+use SilverStripe\ORM\DataObject;
+
 
 
 /**
@@ -69,7 +90,7 @@ class ProductQuestion extends DataObject
      * Links questions to products
      */
     private static $many_many = array(
-        'Products' => 'Product'
+        'Products' => Product::class
     );
 
     /**
@@ -77,7 +98,7 @@ class ProductQuestion extends DataObject
      * Links to folder for images
      */
     private static $has_one = array(
-        'Folder' => 'Folder'
+        'Folder' => Folder::class
     );
 
     /**
@@ -115,7 +136,7 @@ class ProductQuestion extends DataObject
      * Standard SS variable.
      */
     private static $defaults = array(
-        "DefaultFormField" => "TextField",
+        "DefaultFormField" => TextField::class,
         "DefaultAnswer" => "tba"
     );
 
@@ -167,7 +188,7 @@ class ProductQuestion extends DataObject
     }
     public static function get_plural_name()
     {
-        $obj = Singleton("ProductQuestion");
+        $obj = Singleton(ProductQuestion::class);
         return $obj->i18n_plural_name();
     }
 
@@ -236,7 +257,7 @@ class ProductQuestion extends DataObject
                 $fields->addFieldToTab(
                     "Root.Products",
                     new LiteralField(
-                        "Product".$product->ID,
+                        Product::class.$product->ID,
                         "<h5><a href=\"".$product->CMSEditLink()."\">"._t("ProductQuestion.BACK_TO", "Edit ")." ".$product->Title."</a></h5>"
                     )
                 );
@@ -247,10 +268,10 @@ class ProductQuestion extends DataObject
             if ($folders->count()) {
                 $folderMap = $folders->map("ID", "Title")->toArray();
                 $folders = null;
-                $fields->removeFieldFromTab("Root.Main", "Folder");
+                $fields->removeFieldFromTab("Root.Main", Folder::class);
                 $fields->addFieldToTab(
                     "Root.Images",
-                    $treeDropdownField = new TreeDropdownField("FolderID", _t("ProductQuestion.FOLDER", "Folder"), "Folder")
+                    $treeDropdownField = new TreeDropdownField("FolderID", _t("ProductQuestion.FOLDER", Folder::class), Folder::class)
                 );
                 $treeDropdownFieldRightTitle = _t(
                     "ProductQuestion.FOLDER_ID",
@@ -354,7 +375,7 @@ class ProductQuestion extends DataObject
                 }
             }
         } else {
-            $fields->removeByName("Folder");
+            $fields->removeByName(Folder::class);
         }
         if ($this->Products()->count()) {
             $randomProduct = $this->Products()->First();
@@ -437,7 +458,7 @@ class ProductQuestion extends DataObject
             } else {
                 $formFieldClass = $this->DefaultFormField;
                 if (!$formFieldClass) {
-                    $formFieldClass = "DropdownField";
+                    $formFieldClass = DropdownField::class;
                 }
                 $finalOptions = array("" => _t("ProductQuestion.PLEASE_SELECT", " -- please select --")) + $finalOptions;
                 return $formFieldClass::create($this->getFieldForProductName($product), $this->Question, $finalOptions, $value);
@@ -445,7 +466,7 @@ class ProductQuestion extends DataObject
         } else {
             $formFieldClass = $this->DefaultFormField;
             if (!$formFieldClass) {
-                $formFieldClassd = "TextField";
+                $formFieldClassd = TextField::class;
             }
             return $formFieldClass::create($this->getFieldForProductName($product), $this->Question, $value);
         }

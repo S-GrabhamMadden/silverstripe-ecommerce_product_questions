@@ -2,8 +2,12 @@
 
 namespace Sunnysideup\EcommerceProductQuestions\Model;
 
-use DataExtension;
-use FieldList;
+
+
+use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\ORM\DataExtension;
+
 
 
 
@@ -36,7 +40,7 @@ class ProductQuestion_ProductAttributeValues extends DataExtension
     private static $table_name = 'ProductQuestion_ProductAttributeValues';
 
     private static $many_many = array(
-        'ProductQuestions' => 'ProductQuestion'
+        'ProductQuestions' => ProductQuestion::class
     );
 
     public function updateCMSFields(FieldList $fields)

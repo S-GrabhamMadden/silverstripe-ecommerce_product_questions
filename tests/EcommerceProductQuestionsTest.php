@@ -1,5 +1,7 @@
 <?php
 
+use SilverStripe\Dev\SapphireTest;
+
 class EcommerceProductQuestionsTest extends SapphireTest
 {
     protected $usesDatabase = false;

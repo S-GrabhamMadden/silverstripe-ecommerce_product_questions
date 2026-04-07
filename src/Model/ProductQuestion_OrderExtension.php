@@ -2,7 +2,9 @@
 
 namespace Sunnysideup\EcommerceProductQuestions\Model;
 
-use DataExtension;
+
+use SilverStripe\ORM\DataExtension;
+
 
 
 /**

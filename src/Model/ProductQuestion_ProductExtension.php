@@ -2,12 +2,20 @@
 
 namespace Sunnysideup\EcommerceProductQuestions\Model;
 
-use DataExtension;
-use FieldList;
-use TextField;
-use CheckboxSetField;
-use LiteralField;
-use Controller;
+
+
+
+
+
+
+use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\CheckboxSetField;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Control\Controller;
+use SilverStripe\ORM\DataExtension;
+
 
 
 
@@ -41,7 +49,7 @@ class ProductQuestion_ProductDecorator extends DataExtension
 
     private static $db = array('ConfigureLabel' => 'Varchar(50)');
 
-    private static $belongs_many_many = array('ProductQuestions' => 'ProductQuestion');
+    private static $belongs_many_many = array('ProductQuestions' => ProductQuestion::class);
 
     public function updateCMSFields(FieldList $fields)
     {

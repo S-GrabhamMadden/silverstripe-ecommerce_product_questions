@@ -2,10 +2,16 @@
 
 namespace Sunnysideup\EcommerceProductQuestions\Form;
 
-use OptionsetField;
-use ArrayList;
-use ProductQuestion;
-use DataObject;
+
+
+
+
+use SilverStripe\ORM\ArrayList;
+use Sunnysideup\EcommerceProductQuestions\Model\ProductQuestion;
+use SilverStripe\Assets\Image;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Forms\OptionsetField;
+
 
 
 /**
@@ -102,7 +108,7 @@ class ProductQuestionImageSelectorField extends OptionsetField
             foreach ($this->options as $option) {
                 $imageOptions = ProductQuestion::create_file_array_from_option($option);
                 $image = DataObject::get_one(
-                    'Image',
+                    Image::class,
                     array("ParentID" => $this->folderID, "Name" => $imageOptions),
                     $cacheDataObjectGetOne = false
                 );
