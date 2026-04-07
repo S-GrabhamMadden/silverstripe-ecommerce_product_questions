@@ -132,7 +132,7 @@ class ProductQuestion_OrderItemExtension extends DataExtension
      */
     public function ConfigureLabel()
     {
-        Requirements::javascript('ecommerce_product_questions/javascript/EcomProductQuestions.js');
+        Requirements::javascript('sunnysideup/ecommerce_product_questions: ecommerce_product_questions/javascript/EcomProductQuestions.js');
 
         return $this->owner->ProductQuestionsAnswerFormLabel();
     }
@@ -145,7 +145,7 @@ class ProductQuestion_OrderItemExtension extends DataExtension
      */
     public function ConfigureLink()
     {
-        Requirements::javascript('ecommerce_product_questions/javascript/EcomProductQuestions.js');
+        Requirements::javascript('sunnysideup/ecommerce_product_questions: ecommerce_product_questions/javascript/EcomProductQuestions.js');
 
         return $this->owner->ProductQuestionsAnswerFormLink();
     }
@@ -324,7 +324,7 @@ class ProductQuestion_OrderItemExtension extends DataExtension
   * EXP: Check that this still works.  You can put: Requirements::themedCSS('client/css/MyFle') you also need to make sure you have a templates folder in your modules or Requirements::themedCSS will not work.
   * ### @@@@ STOP REPLACEMENT @@@@ ###
   */
-            Requirements::themedCSS('client/css/Cart');
+            Requirements::themedCSS('sunnysideup/ecommerce_product_questions: client/css/Cart');
 
             return $form;
         }
