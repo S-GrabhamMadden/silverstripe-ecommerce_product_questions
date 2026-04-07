@@ -1,5 +1,5 @@
 <div class="productQuestionsAnswerHolder">
-    <% include ProductQuestionsAnswers %>
+    <% include Sunnysideup\EcommerceProductQuestions\IncludesProductQuestionsAnswers %>
     <% if CanConfigure %>
     <div class="configureLinkHolder <% if HasRequiredQuestions %>required<% end_if %>">
         <% if HasRequiredQuestions %>
