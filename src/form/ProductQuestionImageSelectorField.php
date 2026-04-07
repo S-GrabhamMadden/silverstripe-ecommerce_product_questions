@@ -11,7 +11,7 @@ class ProductQuestionImageSelectorField extends OptionsetField
 {
     protected $folderID = 0;
 
-    protected $options = array();
+    protected $options = [];
 
     protected $objects = null;
 

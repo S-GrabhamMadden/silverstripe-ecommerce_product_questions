@@ -8,6 +8,15 @@
  *
  * @author nicolaas <modules@sunnysideup.co.nz>
  */
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD:  extends DataExtension (ignore case)
+  * NEW:  extends DataExtension ...  (COMPLEX)
+  * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
 class ProductQuestion_ProductVariationDecorator extends DataExtension
 {
 
@@ -107,7 +116,7 @@ class ProductQuestion_ProductVariationDecorator extends DataExtension
      * saves the list of product questions
      * @var NULL | DataList
      */
-    private static $_product_questions_cache = array();
+    private static $_product_questions_cache = [];
 
     /**
      *

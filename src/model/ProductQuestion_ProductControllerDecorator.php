@@ -8,6 +8,15 @@
  *
  *
  */
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD:  extends Extension (ignore case)
+  * NEW:  extends Extension ...  (COMPLEX)
+  * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
 class ProductQuestion_ProductControllerDecorator extends Extension
 {
 
@@ -39,7 +48,16 @@ class ProductQuestion_ProductControllerDecorator extends Extension
                 "Title" => $this->productQuestionOrderItem->getTableTitle(),
                 "Form" => $this->ProductQuestionsAnswerForm()
             )
-        )->renderWith("productquestionsanswerselect") ;
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->RenderWith( (ignore case)
+  * NEW: ->RenderWith( ...  (COMPLEX)
+  * EXP: Check that the template location is still valid!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        )->RenderWith("productquestionsanswerselect") ;
     }
 
     /**

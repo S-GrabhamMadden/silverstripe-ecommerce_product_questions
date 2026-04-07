@@ -3,6 +3,15 @@
 /**
  * adds functionality to OrderItems.
  */
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD:  extends DataExtension (ignore case)
+  * NEW:  extends DataExtension ...  (COMPLEX)
+  * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
 class ProductQuestion_OrderItemExtension extends DataExtension
 {
 
@@ -31,8 +40,8 @@ class ProductQuestion_OrderItemExtension extends DataExtension
         $fields->addFieldsToTab(
             'Root.Questions',
             array(
-                ReadOnlyField::create('ProductQuestionsAnswer', _t('ProductQuestions.ANSWERS', 'Answers')),
-                ReadOnlyField::create('JSONAnswers', _t('ProductQuestions.JSON_ANSWERS', 'Answers as JSON')),
+                ReadonlyField::create('ProductQuestionsAnswer', _t('ProductQuestions.ANSWERS', 'Answers')),
+                ReadonlyField::create('JSONAnswers', _t('ProductQuestions.JSON_ANSWERS', 'Answers as JSON')),
             )
         );
         return $fields;
@@ -184,7 +193,7 @@ class ProductQuestion_OrderItemExtension extends DataExtension
      *
      * @var array
      */
-    private static $_has_product_questions = array();
+    private static $_has_product_questions = [];
 
     /**
      * Does the buyable associated with the orderitem
@@ -211,7 +220,7 @@ class ProductQuestion_OrderItemExtension extends DataExtension
      *
      * @var array
      */
-    private static $_product_questions = array();
+    private static $_product_questions = [];
 
     /**
      * @alias for ProductQuestions
@@ -272,19 +281,27 @@ class ProductQuestion_OrderItemExtension extends DataExtension
     {
         $productQuestions = $this->owner->ProductQuestions();
         $buyable = $this->productQuestionBuyable();
-        $backURL = Session::get('BackURL');
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: Session::
+  * EXP: If THIS is a controller than you can write: $this->getRequest(). You can also try to access the HTTPRequest directly. 
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+        $backURL = Controller::curr()->getRequest()->getSession()->get('BackURL');
         if ($backURL || empty($_GET['BackURL'])) {
             //do nothing
         } else {
             $backURL = $_GET['BackURL'];
         }
         if ($productQuestions && $productQuestions->count()) {
-            $requiredfields = array();
+            $requiredfields = [];
             $fields = new FieldList(
                 new HiddenField('OrderItemID', 'OrderItemID', $this->owner->ID),
                 new HiddenField('BackURL', 'BackURL', $backURL)
             );
-            $values = array();
+            $values = [];
             if ($this->owner->JSONAnswers) {
                 $values = json_decode($this->owner->JSONAnswers);
             }
@@ -299,7 +316,15 @@ class ProductQuestion_OrderItemExtension extends DataExtension
             );
             $validator = new RequiredFields($requiredfields);
             $form = new Form($controller, $name, $fields, $actions, $validator);
-            Requirements::themedCSS('Cart');
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: Requirements::themedCSS('
+  * EXP: Check that this still works.  You can put: Requirements::themedCSS('client/css/MyFle') you also need to make sure you have a templates folder in your modules or Requirements::themedCSS will not work.
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+            Requirements::themedCSS('client/css/Cart');
 
             return $form;
         }
@@ -349,7 +374,16 @@ class ProductQuestion_OrderItemExtension extends DataExtension
                     }
                     //$form->addErrorMessage("ProductQuestions", $message, $type);
                 }
-                $this->owner->ProductQuestionsAnswer = $this->owner->renderWith('ProductQuestionsAnswers')->getValue();
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->RenderWith( (ignore case)
+  * NEW: ->RenderWith( ...  (COMPLEX)
+  * EXP: Check that the template location is still valid!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+                $this->owner->ProductQuestionsAnswer = $this->owner->RenderWith('ProductQuestionsAnswers')->getValue();
             }
             $this->owner->JSONAnswers = json_encode($answers);
             if ($write) {
@@ -363,7 +397,7 @@ class ProductQuestion_OrderItemExtension extends DataExtension
         parent::onBeforeWrite();
         if (!empty($this->owner->Parameters)) {
             if (!empty($this->owner->Parameters['productquestions'])) {
-                $answers = array();
+                $answers = [];
                 $params = $this->owner->Parameters['productquestions'];
                 $params = urldecode($params);
                 $items = explode('|', $params);
@@ -373,7 +407,7 @@ class ProductQuestion_OrderItemExtension extends DataExtension
                             $itemArray = explode('=', $item);
                             if (is_array($itemArray) && count($itemArray) == 2) {
                                 $key = intval(str_replace(array('ProductQuestions[', ']'), '', $itemArray[0]));
-                                $value = convert::raw2sql($itemArray[1]);
+                                $value = Convert::raw2sql($itemArray[1]);
                                 $answers[$key] = $value;
                             }
                         }

@@ -114,7 +114,7 @@ class ProductQuestion extends DataObject
      */
     private static $available_form_fields_list = array(
         "DropdownField" => "Dropdown Field",
-        "OptionSetField" => "Option list Field"
+        "OptionsetField" => "Option list Field"
     );
 
     /**
@@ -186,7 +186,7 @@ class ProductQuestion extends DataObject
         if (!$this->HasImages) {
             $fields->addFieldToTab(
                 "Root.DefaultFormField",
-                new OptionSetField(
+                new OptionsetField(
                     "DefaultFormField",
                     _t("ProductQuestion.DEFAULTFORMFIELD", "Field type to use"),
                     $this->Options ? $this->Config()->get("available_form_fields_list") : $this->Config()->get("available_form_fields_free")
@@ -243,7 +243,25 @@ class ProductQuestion extends DataObject
                 $folder = Folder::get()->byID($this->FolderID);
                 if ($folder) {
                     $treeDropdownFieldRightTitle .= "
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: assets/
+  * NEW: assets/ ...  (COMPLEX)
+  * EXP: Check if you need the assets parts - use ASSETS_PATH if needed
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                         <br /><a href=\"admin/assets/show/".$folder->ID."/\">"._t("ProductQuestion.OPEN", "Open")." ".$folder->Title."</a>
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: assets/
+  * NEW: assets/ ...  (COMPLEX)
+  * EXP: Check if you need the assets parts - use ASSETS_PATH if needed
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                         <br /><a href=\"admin/assets/add/?ID".$folder->ID."/\">"._t("ProductQuestion.ADD_IMAGES_TO", "Add images to")." ".$folder->Title."</a>";
                 }
                 $treeDropdownField->setRightTitle($treeDropdownFieldRightTitle);
@@ -254,12 +272,21 @@ class ProductQuestion extends DataObject
                     $imagesInFolderArray = $imagesInFolder->map("ID", "Name")->toArray();
                     $options = explode(",", $this->Options);
                     $imagesInFolderField = new ReadonlyField("ImagesInFolder", _t("ProductQuestion.NO_IMAGES", "Images in folder"), implode("<br />", $imagesInFolderArray));
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->dontEscape
+  * NEW: ->dontEscape ...  (COMPLEX)
+  * EXP: dontEscape is not longer in use for form fields, please use HTMLReadonlyField (or similar) instead.
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                     $imagesInFolderField->dontEscape = true;
                     $fields->addFieldToTab("Root.Images", $imagesInFolderField);
                     //matches
                     if ($this->exists()) {
-                        $matchesInFolderArray = array();
-                        $nonMatchesInFolderArray = array();
+                        $matchesInFolderArray = [];
+                        $nonMatchesInFolderArray = [];
                         $options = explode(",", $this->Options);
                         if (count($options)) {
                             foreach ($options as $option) {
@@ -275,9 +302,27 @@ class ProductQuestion extends DataObject
                             }
                         }
                         $matchesInFolderField = new ReadonlyField("MatchesInFolder", _t("ProductQuestion.MATCHES_IN_FOLDER", "Matches in folder"), implode("<br />", $matchesInFolderArray));
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->dontEscape
+  * NEW: ->dontEscape ...  (COMPLEX)
+  * EXP: dontEscape is not longer in use for form fields, please use HTMLReadonlyField (or similar) instead.
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                         $matchesInFolderField->dontEscape = true;
                         $fields->addFieldToTab("Root.Images", $matchesInFolderField);
                         $nonMatchesInFolderField = new ReadonlyField("NonMatchesInFolder", _t("ProductQuestion.NON_MATCHES_IN_FOLDER", "NON Matches in folder"), implode("<br />", $nonMatchesInFolderArray));
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: ->dontEscape
+  * NEW: ->dontEscape ...  (COMPLEX)
+  * EXP: dontEscape is not longer in use for form fields, please use HTMLReadonlyField (or similar) instead.
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
                         $nonMatchesInFolderField->dontEscape = true;
                         $fields->addFieldToTab("Root.Images", $nonMatchesInFolderField);
                     }
@@ -359,7 +404,7 @@ class ProductQuestion extends DataObject
         }
         if ($this->Options) {
             //if HasImages?
-            $finalOptions = array();
+            $finalOptions = [];
             $optionArray = explode(",", $this->Options);
             foreach ($optionArray as $option) {
                 $option = trim($option);
@@ -434,6 +479,15 @@ class ProductQuestion extends DataObject
     {
         return Controller::join_links(
             Director::baseURL(),
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $this->ClassName
+  * NEW: $this->ClassName ...  (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
             "/admin/product-config/".$this->ClassName."/EditForm/field/".$this->ClassName."/item/".$this->ID."/edit",
             $action
         );

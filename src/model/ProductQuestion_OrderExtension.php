@@ -7,6 +7,15 @@
  *
  */
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD:  extends DataExtension (ignore case)
+  * NEW:  extends DataExtension ...  (COMPLEX)
+  * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
 class ProductQuestion_OrderExtension extends DataExtension
 {
 
@@ -16,7 +25,7 @@ class ProductQuestion_OrderExtension extends DataExtension
      */
     public function updateSubmitErrors()
     {
-        $array = array();
+        $array = [];
         foreach ($this->owner->OrderItems() as $item) {
             if (!$item->AllRequiredQuestionsAnswered()) {
                 $txt = _t("ProductQuestion.PROVIDE_MORE_INFORMATION", "Please answer question in relation to:");

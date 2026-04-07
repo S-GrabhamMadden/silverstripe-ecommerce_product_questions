@@ -5,7 +5,7 @@ Product:
   extensions:
     - ProductQuestion_ProductDecorator
 
-Product_Controller:
+ProductController:
   extensions:
     - ProductQuestion_ProductControllerDecorator
 
