@@ -5,6 +5,16 @@
  */
 class ProductQuestion_OrderItemExtension extends DataExtension
 {
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * OLD: private static $db
+  * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+    
+    private static $table_name = 'ProductQuestion_OrderItemExtension';
+
     private static $db = array(
         'ProductQuestionsAnswer' => 'HTMLText',
         'JSONAnswers' => 'Text',

@@ -12,6 +12,16 @@ class ProductQuestion extends DataObject
     /**
      * Standard SS variable.
      */
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * OLD: private static $db
+  * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+    
+    private static $table_name = 'ProductQuestion';
+
     private static $db = array(
         'InternalCode' => 'Varchar(30)',
         'Question' => 'Varchar(255)',

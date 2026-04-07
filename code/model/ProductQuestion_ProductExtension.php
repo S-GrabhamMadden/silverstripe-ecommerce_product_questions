@@ -10,6 +10,16 @@
  */
 class ProductQuestion_ProductDecorator extends DataExtension
 {
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * OLD: private static $db
+  * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
+    
+    private static $table_name = 'ProductQuestion_ProductDecorator';
+
     private static $db = array('ConfigureLabel' => 'Varchar(50)');
 
     private static $belongs_many_many = array('ProductQuestions' => 'ProductQuestion');
