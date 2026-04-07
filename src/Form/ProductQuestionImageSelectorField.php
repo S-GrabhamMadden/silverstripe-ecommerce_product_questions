@@ -1,5 +1,13 @@
 <?php
 
+namespace Sunnysideup\EcommerceProductQuestions\Form;
+
+use OptionsetField;
+use ArrayList;
+use ProductQuestion;
+use DataObject;
+
+
 /**
  * form field to select answer for question.
  *

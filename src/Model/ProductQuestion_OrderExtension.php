@@ -1,5 +1,10 @@
 <?php
 
+namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+use DataExtension;
+
+
 /**
  * adds functionality to OrderItems
  *

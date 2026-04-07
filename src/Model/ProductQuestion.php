@@ -1,5 +1,27 @@
 <?php
 
+namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+use DataObject;
+use CheckboxField;
+use OptionsetField;
+use HiddenField;
+use Product;
+use CheckboxSetField;
+use GridField;
+use GridFieldEditOriginalPageConfigWithDelete;
+use LiteralField;
+use Folder;
+use TreeDropdownField;
+use Image;
+use ReadonlyField;
+use ProductVariation;
+use Convert;
+use ProductQuestionImageSelectorField;
+use Controller;
+use Director;
+
+
 /**
  * Define the Product Questions ...
  *

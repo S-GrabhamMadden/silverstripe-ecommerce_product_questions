@@ -1,5 +1,13 @@
 <?php
 
+namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+use DataExtension;
+use FieldList;
+use CheckboxSetField;
+use Controller;
+
+
 
 
 /**

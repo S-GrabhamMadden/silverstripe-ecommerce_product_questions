@@ -1,5 +1,21 @@
 <?php
 
+namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+use DataExtension;
+use FieldList;
+use ReadonlyField;
+use Requirements;
+use ModelAsController;
+use Controller;
+use HiddenField;
+use FormAction;
+use RequiredFields;
+use Form;
+use ArrayList;
+use Convert;
+
+
 /**
  * adds functionality to OrderItems.
  */

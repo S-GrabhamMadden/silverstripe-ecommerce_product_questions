@@ -1,5 +1,13 @@
 <?php
 
+namespace Sunnysideup\EcommerceProductQuestions\Model;
+
+use Extension;
+use OrderItem;
+use FieldList;
+use Convert;
+
+
 
 
 /**
